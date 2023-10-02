@@ -17,4 +17,4 @@ const UserSchema = new Schema({
     versionKey: false
 })
 
-module.exports = model('usuarios', UserSchema)
+module.exports = model('user', UserSchema)

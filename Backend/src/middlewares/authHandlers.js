@@ -6,8 +6,8 @@ const myError = require('../libs/myError')
 module.exports = {
     async verifyToken(req, res, next){
         try{
-            let token = req.header('authorization')
-        
+            let token = req.header('Authorization')
+            
             if(!token) return next(myError('Unauthorized', 401))
             token = token.split(' ')[1]
 

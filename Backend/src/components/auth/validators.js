@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const validatorHandler = require('../../middlewares/validatorHandlers')
+const { validatorHandler } = require('../../middlewares/validatorHandlers')
 
 const username = Joi.string();
 const email = Joi.string().email();

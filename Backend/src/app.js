@@ -1,4 +1,5 @@
 const express = require('express')
+const fileUpload = require('express-fileupload')
 const cors = require('cors')
 const router = require('./network/routes')
 const errHandler = require('./middlewares/errorHandlers')
@@ -25,6 +26,7 @@ class App{
         this.app.use(cors(optionsCors));
         this.app.use(express.json())
         this.app.use(express.urlencoded({extended: true}))
+        this.app.use(fileUpload())
     }
 
     routes(){

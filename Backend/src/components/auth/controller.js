@@ -5,6 +5,7 @@ const config = require('../../config/config')
 const Model = require('../user/model')
 const Store = require('../../db/store')
 const store = new Store(Model)
+const cloudController = require('../cloud/controller')
 
 async function register(user){
     const password = await bcrypt.hash(user.password, 10)
@@ -12,7 +13,9 @@ async function register(user){
     const newUser = await store.addOne(user)
     const sendUser = createSendUser(newUser)
 
-    const token = jwt.sign(sendUser, config.jwtSecret, { expiresIn: '15m' })
+    const token = jwt.sign(sendUser, config.jwtSecret, { expiresIn: '6h' })
+
+    cloudController.registerDir(sendUser._id)
     
     return { user: sendUser, token }
 }
@@ -30,8 +33,10 @@ async function login({ email, password }){
     }
 
     const sendUser = createSendUser(user)
-    const token = jwt.sign(sendUser, config.jwtSecret, { expiresIn: '15m' })    
+    const token = jwt.sign(sendUser, config.jwtSecret, { expiresIn: '6h' })    
     
+    cloudController.registerDir(sendUser._id)
+
     return { user: sendUser, token }
 }
 
