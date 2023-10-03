@@ -21,6 +21,18 @@ function validatorHandler(schema) {
   }
 }
 
+function validatorParamsHandler(schema) {
+  return (req, res, next) => {
+    let data = req.params;
+    data = cleanData(data)
+    const { error } = schema.validate(data, { abortEarly: true, allowUnknown: true });
+    if (error) {
+      next(myError(error, 400, error.details));
+    }
+    next();
+  }
+}
+
 function validatorFiles(schema){
   return (req, res, next) => {
     const data = {
@@ -43,4 +55,4 @@ function validateFile(value, helpers){
   return value;
 };
 
-module.exports = { validatorHandler, validatorFiles, validateFile };
+module.exports = { validatorHandler, validatorParamsHandler, validatorFiles, validateFile };

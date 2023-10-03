@@ -1,6 +1,3 @@
-// const Imagen = require('../models/Imagen')
-// const Video = require('../models/Video')
-
 const fs = require('fs-extra')
 const cloudinary = require('cloudinary')
 const myError = require('./myError')
@@ -50,7 +47,7 @@ module.exports = {
         return true
     },
 
-    fileExistBoolean: async (pathComplete) => {
+    existBoolean: async (pathComplete) => {
         try{
             await fs.promises.stat(pathComplete)
             return true
@@ -61,7 +58,7 @@ module.exports = {
 
     },
 
-    uploadFileWithUniqueName: async (pathComplete, originalFileName) => {
+    getUniqueName: async (pathComplete, originalFileName) => {
         let newFileName = originalFileName;
         let n = 1;
     
@@ -113,44 +110,14 @@ module.exports = {
         return `${sizeInKB} KB`;
     },
 
-    // uploadImgOvid: async (file, ext, path, type, carpeta, userId) => {
-    //     const pathComplete = path + '/' + file.name
-    //     file.mv(pathComplete)
-    //     const { join } = require('path')
-    //     const pathClou = join(path, '/'+file.name)
-
-    //     const response = await cloudinary.v2.uploader.upload(pathClou)
-    //     const imageUrl = response.secure_url
-    //     const public_id = response.public_id
-
-    //     fs.unlink(pathComplete)
-    //     rutaArchivo = ''
-    //     if(carpeta == '/'){
-    //         rutaArchivo = file.name
-    //     }else{
-    //         rutaArchivo = carpeta+'/'+file.name
-    //     }
-    //     if(type == 'imagen'){
-    //         const image = await Imagen.findOne({userId, rutaArchivo})
-    //         if(image){
-    //             return 'false'
-    //         }else{
-                
-    //             const newImage = new Imagen({userId, carpeta, rutaArchivo, name: file.name,ext, size: file.size, url: imageUrl, public_id})
-    //             console.log(newImage)
-    //             await newImage.save()
-    //             return 'true'
-    //         }
-    //     }else if(type == 'video'){
-    //         const newVideo = new Video({userId, carpeta, name: file.name,ext, size: file.size, url: imageUrl, public_id})
-    //         await newVideo.save()
-            
-    //         return
-    //     }
-    // },
-
-    deleteImage: async (publicId) => {
-        await cloudinary.v2.uploader.destroy(publicId)
+    getNameFromPath: (mipath) => {
+        while (mipath.endsWith('/')) {
+            mipath = mipath.slice(0, -1);
+        }
+        
+        let inicio = mipath.lastIndexOf('/');
+        inicio++;
+        return mipath.substring(inicio);
     }
     
 }

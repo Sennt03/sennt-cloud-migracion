@@ -1,4 +1,4 @@
-const { dirExist, fileExist, withoutExt, getDate, getSize, fileExistBoolean, uploadFileWithUniqueName } = require('../../libs/path')
+const { dirExist, fileExist, withoutExt, getDate, getSize, existBoolean, getUniqueName, getNameFromPath } = require('../../libs/path')
 const myError = require('../../libs/myError')
 const fs = require('fs-extra')
 const path = require('path')
@@ -65,9 +65,9 @@ async function createDir(userId, mipath, name){
         return {message: 'Carpeta creada correctamente'}
     }catch(e){
         if(e.code == 'ENOENT'){
-            throw myError('Ruta inexistente', 403)
+            throw myError('Ruta inexistente', 400)
         }else if(e.code == 'EEXIST'){
-            throw myError('La carpeta ya existe', 403)
+            throw myError('La carpeta ya existe', 409)
         }else{
             throw myError('Ha ocurrido un error inesperado', 500)
         }
@@ -97,9 +97,9 @@ async function uploadFile(userId, mipath, files){
             continue
         }
         
-        const exist = await fileExistBoolean(pathFile)
+        const exist = await existBoolean(pathFile)
         if(exist){
-            file.name = await uploadFileWithUniqueName(pathComplete, file.name)
+            file.name = await getUniqueName(pathComplete, file.name)
         }
     
         try{
@@ -119,7 +119,7 @@ async function deleteFile(userId, mipath){
         const stats = await fs.stat(pathComplete);
 
         if (stats.isDirectory()) {
-            await fs.rmdirSync(pathComplete, { recursive: true });
+            await fs.rm(pathComplete, { recursive: true });
         } else if (stats.isFile()) {
             await fs.unlink(pathComplete);
         } else {
@@ -131,10 +131,85 @@ async function deleteFile(userId, mipath){
         else throw myError('Ha ocurrido un error inesperado.', 500)
     }
 
-    let inicio = mipath.lastIndexOf('/')
-    inicio++
-    let nombre = mipath.substring(inicio)
+    let nombre = getNameFromPath(mipath)
     return { message: `"${nombre}": Eliminado correctamente` }
+}
+
+async function copy(userId, mipath, newPath){
+    let name = getNameFromPath(mipath)
+    
+    const pathComplete = path.join(cloudPath + userId + '/' + mipath)
+    let newPathComplete = path.join(cloudPath + userId + '/' + newPath + '/' + name)
+
+    const exist = await existBoolean(newPathComplete)
+    if(exist){
+        name = await getUniqueName(path.join(cloudPath + userId + '/' + newPath), name)
+        newPathComplete = path.join(cloudPath + userId + '/' + newPath + '/' + name)
+    }
+
+    try{
+        await fs.copy(pathComplete, newPathComplete)
+    }catch(e){
+        if(e.code == 'ENOENT'){
+            throw myError('La ruta del archivo o carpeta no existe', 400)
+        }else{
+            throw myError(`Ha ocurrido un error inesperado`, 500)
+        }
+    }
+
+    return { message: `"${name}": Copiado correctamente.` }
+}
+
+async function move(userId, mipath, newPath, reemplazar){
+    let name = getNameFromPath(mipath)
+    
+    const pathComplete = path.join(cloudPath + userId + '/' + mipath)
+    let newPathComplete = path.join(cloudPath + userId + '/' + newPath + '/' + name)
+
+    const options = { overwrite: false }
+    if(reemplazar === 'true'){
+        options.overwrite = true
+    }
+
+    try{
+        await fs.move(pathComplete, newPathComplete, options)
+    }catch(e){
+        if(e.code == 'ENOENT'){
+            throw myError(`Ruta inexistente`, 400)
+        }else if(reemplazar !== 'true'){
+            throw myError(`"${name}": Ya existe en esta ruta.`, 409)
+        }else{
+            throw myError(`Ha ocurrido un error inesperado.`, 500)
+        }
+    }
+    return { message: `"${name}": Movido correctamente.` }
+}
+
+async function rename(userId, mipath, name){
+    const segmentos = mipath.split('/').filter(segmento => segmento.trim() !== '');
+    segmentos.pop()
+    const newPath = segmentos.join('/')
+    
+    const pathComplete = path.join(cloudPath + userId + '/' + mipath)
+    const newPathComplete = path.join(cloudPath + userId + '/' + newPath + '/' + name)
+    
+    const exist = await existBoolean(newPathComplete)
+    if(exist){
+        throw myError(`Ya existe en esta ruta, ingrese otro nombre.`, 400)
+    }
+
+    try{
+        await fs.move(pathComplete, newPathComplete, { overwrite: true });
+    }catch(e){
+        if(e.code == 'ENOENT'){
+            throw myError(`Ruta inexistente.`, 400)
+        }
+
+        throw myError(`Ha ocurrido un error inesperado.`, 500)
+    }
+
+    const nameOld = getNameFromPath(mipath)
+    return { message: `"${nameOld}": Se renombro a "${name}", correctamente.` }
 }
 
 module.exports = {
@@ -145,5 +220,8 @@ module.exports = {
     downloadFile,
     createDir,
     uploadFile,
-    deleteFile
+    deleteFile,
+    copy,
+    move,
+    rename
 }

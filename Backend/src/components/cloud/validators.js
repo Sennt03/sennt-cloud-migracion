@@ -1,17 +1,25 @@
 const Joi = require('joi');
-const { validatorHandler, validateFile, validatorFiles } = require('../../middlewares/validatorHandlers')
+const { validatorHandler, validateFile, validatorFiles, validatorParamsHandler } = require('../../middlewares/validatorHandlers')
 
-const name = Joi.string();
+const pathSchema = Joi.object({
+  path: Joi.string().required()
+});
 
-const createDirSchema = Joi.object({
-  name: name.required()
+const nameSchema = Joi.object({
+  name: Joi.string().required()
+});
+
+const newPathSchema = Joi.object({
+  newPath: Joi.string().required()
 });
 
 const uploadFileSchema = Joi.object({
   files: Joi.any().custom(validateFile, 'File required').required()
 });
 
-const createDirValidator = validatorHandler(createDirSchema)
+const pathValidator = validatorParamsHandler(pathSchema)
+const nameValidator = validatorHandler(nameSchema)
 const uploadFileValidator = validatorFiles(uploadFileSchema)
+const newPathValidator = validatorHandler(newPathSchema)
 
-module.exports = { createDirValidator, uploadFileValidator }
+module.exports = { pathValidator, nameValidator, uploadFileValidator, newPathValidator }

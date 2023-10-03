@@ -2,21 +2,21 @@ const router = require('express').Router()
 const controller = require('./controller')
 const response = require('../../network/response')
 const { verifyToken } = require('../../middlewares/authHandlers')
-const { createDirValidator, uploadFileValidator } = require('./validators')
+const { uploadFileValidator, newPathValidator, nameValidator, pathValidator } = require('./validators')
 
-// DETAILa
+// DETAIL
 router.get('/openDir/:path(*)?', verifyToken, (req, res, next) => {
     const path = req.params.path || ''
     response.process(req, res, next, controller.openDir, req.user._id, path)
 })
 
-router.get('/detailFile/:path(*)', verifyToken, async(req, res, next) => {
+router.get('/detailFile/:path(*)', verifyToken, pathValidator, async(req, res, next) => {
     const path = req.params.path || ''
     response.process(req, res, next, controller.detailFile, req.user._id, path)
 })
 
 // UPLOAD & DOWLOAD
-router.post('/createDir/:path(*)?', verifyToken, createDirValidator, async(req, res, next) => {
+router.post('/createDir/:path(*)?', verifyToken, nameValidator, async(req, res, next) => {
     const path = req.params.path || ''
     response.process(req, res, next, controller.createDir, req.user._id, path, req.body.name)
 })
@@ -27,7 +27,7 @@ router.post('/uploadFile/:path(*)?', verifyToken, uploadFileValidator, async(req
     response.process(req, res, next, controller.uploadFile, req.user._id, path, files)
 })
 
-router.get('/downloadFile/:path(*)', verifyToken, async (req, res, next) => {
+router.get('/downloadFile/:path(*)', verifyToken, pathValidator, async (req, res, next) => {
     try{
         const path = req.params.path || ''
         const { file, pathComplete } = await controller.downloadFile(req.user._id, path)
@@ -39,9 +39,25 @@ router.get('/downloadFile/:path(*)', verifyToken, async (req, res, next) => {
 })
 
 // ACTIONS
-router.delete('/delete/:path(*)', verifyToken, async(req, res, next) => {
+router.delete('/delete/:path(*)', verifyToken, pathValidator, async(req, res, next) => {
     const path = req.params.path || ''
     response.process(req, res, next, controller.deleteFile, req.user._id, path)
 })
+
+router.post('/copy/:path(*)', verifyToken, pathValidator, newPathValidator, async(req, res, next) => {
+    const path = req.params.path || ''
+    response.process(req, res, next, controller.copy, req.user._id, path, req.body.newPath)
+})
+
+router.post('/move/:path(*)', verifyToken, pathValidator, newPathValidator, async(req, res, next) => {
+    const path = req.params.path || ''
+    response.process(req, res, next, controller.move, req.user._id, path, req.body.newPath, req.body?.reemplazar)
+})
+
+router.post('/rename/:path(*)', verifyToken, pathValidator, nameValidator, async(req, res, next) => {
+    const path = req.params.path || ''
+    response.process(req, res, next, controller.rename, req.user._id, path, req.body.name)
+})
+
 
 module.exports = router
