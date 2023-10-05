@@ -1,1 +1,72 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+
+// GENERAL
+
+body {
+    font-family: 'Nunito', sans-serif;
+    line-height: 26px;
+    color: #2d2c2c;
+    font-weight: 400;
+}
+
+.btn,
+.btn:focus,
+button,
+button:focus {
+  outline: none !important;
+}
+
+a {
+  text-decoration: none !important;
+  outline: none;
+}
+
+p {
+  font-size: 16px;
+}
+
+
+// AUTH
+.auth{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-floating-custom {
+    font-size: 14px;
+}
+
+.form-floating-custom .form-control {
+    border-radius: 0;
+}
+
+.form-floating-custom .form-control:focus {
+    border-color: #1fafa5 !important;
+    box-shadow: none;
+}
+
+.form-floating-custom .btn-link {
+    padding: 0.7rem 0.9rem;
+}
+
+.btn-dark {
+    background: #2d2c2c;
+    border-color: #2d2c2c !important;
+}
+
+.btn-dark:hover, .btn-dark:focus, .btn-dark:active {
+    background: #232222;
+    border-color: #232222;
+}
+
+.btn-outline-dark {
+    color: #2d2c2c;
+    border-color: #2d2c2c;
+}
+
+.btn-outline-dark:hover, .btn-outline-dark:focus, .btn-outline-dark:active{
+    background: #2d2c2c;
+    border-color: #2d2c2c;
+}
