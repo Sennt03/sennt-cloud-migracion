@@ -2,6 +2,8 @@ import { Component, Renderer2 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -11,12 +13,14 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class LoginComponent {
 
   form: FormGroup
+  maskLoad = new Subject<boolean>()
 
   constructor(
     private renderer: Renderer2,
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
     ) {
       this.buildForm()
     }
@@ -45,13 +49,6 @@ export class LoginComponent {
     this.router.navigate(['../register'], { relativeTo: this.route })
   }
 
-  login(){
-    if(!this.form.valid){
-      this.form.markAllAsTouched()
-      return
-    }
-  }
-
   hasError(field, error){
     console.log('hasError', field)
     console.log(this.form.get(field).errors)
@@ -60,6 +57,29 @@ export class LoginComponent {
 
   haveErrors(field){
     return this.form.get(field).touched && this.form.get(field).invalid
+  }
+
+  login(){
+    if(!this.form.valid){
+      this.form.markAllAsTouched()
+      return
+    }
+
+    this.maskLoad.next(true)
+    this.authService.login(this.form.value).subscribe({
+      next: (res) => {
+        setTimeout(() => {
+          this.maskLoad.next(false)
+        }, 3000);
+        // this.authService.saveAuth(res)
+        // this.form.markAsUntouched()
+        // this.router.navigate(['/'])
+      },
+      error: (err) => {
+        this.maskLoad.next(false)
+        console.log('Error: ', err)
+      }
+    })
   }
 
 }

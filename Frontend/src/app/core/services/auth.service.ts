@@ -9,7 +9,7 @@ import { LsLogin, LsResAuth } from '../models/auth.models';
 })
 export class AuthService {
 
-  url = `${environment.url_api}/auth`
+  private url = `${environment.url_api}/auth`
 
   constructor(
     private http: HttpClient
@@ -18,4 +18,9 @@ export class AuthService {
   login(data: LsLogin): Observable<LsResAuth>{
     return this.http.post<LsResAuth>(`${this.url}/login`, data)
   }
+
+  saveAuth(data: LsResAuth){
+    localStorage.setItem('auth', JSON.stringify(data))
+  }
+
 }
