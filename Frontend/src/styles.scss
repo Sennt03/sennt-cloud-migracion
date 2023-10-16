@@ -153,8 +153,13 @@ p {
     padding: 60px 20px 0;
 }
 
+.auth .div-error{
+    color: red;
+    margin-bottom: -10px;
+}
+
 .auth.register .form{
-    padding: 52px 20px 0;
+    padding: 52px 20px;
 }
 
 .form-floating-custom {

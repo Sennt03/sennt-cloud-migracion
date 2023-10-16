@@ -12,23 +12,42 @@
                     </div>  
                 </div>
             </div>
-            <div class="col-md-7 form">
+            <form [formGroup]="form" (ngSubmit)="login()" class="col-md-7 form">
                 <div class="text">
                     Log in to <p>SenntCloud</p>
                 </div>
 
                 <div class="form-floating form-floating-custom mb-3">
-                    <input type="text" class="form-control" id="input-username" placeholder="Enter Email">
+                    <input formControlName="email" type="text" class="form-control" id="input-username" placeholder="Enter Email">
                     <label for="input-username">Email</label>
+
+                    <div *ngIf="haveErrors('email')" class="div-error">
+                        <div *ngIf="hasError('email', 'email')">
+                            *Enter a valid email
+                        </div>
+                        <div *ngIf="hasError('email', 'required')">
+                            *Required
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-floating form-floating-custom form-password auth-pass-inputgroup mb-3">
-                    <input type="password" class="form-control" id="password-input" placeholder="Enter Password">
+                    <input formControlName="password" type="password" class="form-control" id="password-input" placeholder="Enter Password">
                     <button (click)="togglePasswordVisibility()" type="button" class="btn btn-link position-absolute h-100 end-0 top-0" id="password-addon">
                         <i class="icon-password fa-regular fa-eye"></i>
                     </button>
                     <label for="input-password">Password</label>
+                    
+                    <div *ngIf="haveErrors('password')" class="div-error">
+                        <div *ngIf="hasError('password', 'minlength')">
+                            * Must have at least 8 letters
+                        </div>
+                        <div *ngIf="hasError('password', 'required')">
+                            * Required
+                        </div>
+                    </div>
                 </div>
+
                 <div class="mt-4">
                     <button class="btn btn-dark shadow-none w-100" type="submit">Log In</button>
                 </div>
@@ -37,7 +56,7 @@
                     <p class="mb-0 text-muted">Don't have an account ?<a (click)="signup()" class="text-success fw-bold text-decoraton-underline ms-1"> Sign up
                         </a></p>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
