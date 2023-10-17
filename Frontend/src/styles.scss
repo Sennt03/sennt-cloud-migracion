@@ -26,6 +26,15 @@ p {
   font-size: 16px;
 }
 
+#toast-container > div{
+    padding: 8px 25px 8px 50px;
+    width: 300px;
+}
+
+.toast-close-button{
+    top: 0;
+}
+
 // AUTH
 .auth{
     height: 100vh;
@@ -90,14 +99,14 @@ p {
 
 .auth .circulo{
     width: 100px;
-    height: 50px;
+    height: 60px;
     border-radius:50%;
     position: relative;
     overflow: hidden;
     box-shadow: 1px 2px 4px #ffffff;
     
     &-container{
-        width: 120px;
+        width: 100px;
         border-radius: 50%;
         display: flex;
         justify-content: center;
@@ -150,7 +159,7 @@ p {
 }
 
 .auth .form{
-    padding: 60px 20px 0;
+    padding: 60px 20px;
 }
 
 .auth .div-error{
@@ -222,7 +231,12 @@ p {
 }
 
 @media(min-width: 768px){
+    .auth .circulo{
+        width: 120px;
+    }
+    
     .auth .circulo-container{
+        width: 120px;
         height: 115px;
         bottom: auto;
         right: -59px;

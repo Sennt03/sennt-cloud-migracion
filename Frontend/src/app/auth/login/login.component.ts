@@ -2,8 +2,9 @@ import { Component, Renderer2 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthService } from '@services/auth.service';
 import { Subject } from 'rxjs';
+import toastr from '@shared/utils/toastr';
 
 @Component({
   selector: 'app-login',
@@ -50,8 +51,6 @@ export class LoginComponent {
   }
 
   hasError(field, error){
-    console.log('hasError', field)
-    console.log(this.form.get(field).errors)
     return this.form.get(field).hasError(error)
   }
 
@@ -77,7 +76,9 @@ export class LoginComponent {
       },
       error: (err) => {
         this.maskLoad.next(false)
-        console.log('Error: ', err)
+        if (window.innerWidth < 768) toastr.setOption('positionClass', 'toast-top-center')
+        toastr.error(err.error.message, 'Error')
+        toastr.setDefaultsOptions()
       }
     })
   }
