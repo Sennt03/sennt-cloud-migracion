@@ -15,7 +15,7 @@ async function register(user){
 
     const token = jwt.sign(sendUser, config.jwtSecret, { expiresIn: '6h' })
 
-    cloudController.registerDir(sendUser._id)
+    await cloudController.registerDir(sendUser._id)
     
     return { user: sendUser, token }
 }

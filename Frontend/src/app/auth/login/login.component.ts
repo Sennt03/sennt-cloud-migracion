@@ -67,17 +67,16 @@ export class LoginComponent {
     this.maskLoad.next(true)
     this.authService.login(this.form.value).subscribe({
       next: (res) => {
-        setTimeout(() => {
-          this.maskLoad.next(false)
-        }, 3000);
-        // this.authService.saveAuth(res)
-        // this.form.markAsUntouched()
-        // this.router.navigate(['/'])
+        toastr.success('Welcome!', '')
+        this.maskLoad.next(false)
+        this.authService.saveAuth(res)
+        this.form.markAsUntouched()
+        this.router.navigate(['/'])
       },
       error: (err) => {
         this.maskLoad.next(false)
         if (window.innerWidth < 768) toastr.setOption('positionClass', 'toast-top-center')
-        toastr.error(err.error.message, 'Error')
+        toastr.error(err.error.message, 'Failed Login')
         toastr.setDefaultsOptions()
       }
     })
