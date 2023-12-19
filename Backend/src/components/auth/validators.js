@@ -4,6 +4,7 @@ const { validatorHandler } = require('../../middlewares/validatorHandlers')
 const username = Joi.string();
 const email = Joi.string().email();
 const password = Joi.string().min(8);
+const field = Joi.string()
 
 const registerSchema = Joi.object({
   username: username.required(),
