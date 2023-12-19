@@ -48,13 +48,13 @@ function createSendUser(user){
     }
 }
 
-function findValidate(field, email = true){
-    if(email){
-        return store.findOne({email: {$regex: `^${field}$`, $options: 'i'}})
-    }else{
-        return store.findOne({username: {$regex: `^${field}$`, $options: 'i'}})
-    }
-}
+function findValidate(field, email = true) {
+    const regexField = new RegExp(`^${field}$`, 'i');
+    const query = email ? { email: { $regex: regexField } } : { username: { $regex: regexField } };
+  
+    return store.findOne(query);
+  }
+  
 
 async function validateField(field, value){
     let exists
