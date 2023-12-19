@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@services/auth.service';
 import { MyValidators } from '@shared/utils/myValidators';
+import toastr from '@shared/utils/toastr';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -69,7 +70,23 @@ export class RegisterComponent {
       return
     }
 
-    // this.maskLoad.next(true)
+    this.maskLoad.next(true)
+    this.authService.register(this.form.value).subscribe({
+      next: (res) => {
+        toastr.success('Welcome!', '')
+        this.maskLoad.next(false)
+        this.authService.saveAuth(res)
+        this.form.markAsUntouched()
+        this.router.navigate(['/'])
+      },
+      error: (err) => {
+        this.maskLoad.next(false)
+        toastr.setOption('timeOut', 3000)
+        if (window.innerWidth < 768) toastr.setOption('positionClass', 'toast-top-center')
+        toastr.error(err.error.message, 'Failed Register')
+        toastr.setDefaultsOptions()
+      }
+    })
   }
 
 }

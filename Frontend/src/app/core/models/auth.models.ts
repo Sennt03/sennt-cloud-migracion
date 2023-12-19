@@ -7,7 +7,6 @@ export interface LsisAvaible{
 }
 
 export interface LsRegister{
-    name: string,
     username: string,
     email: string,
     password: string

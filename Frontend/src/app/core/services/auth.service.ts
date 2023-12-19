@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/enviroment/enviroment';
 import { Observable, ObservableInput, catchError, throwError } from 'rxjs';
-import { LsFields, LsLogin, LsResAuth, LsisAvaible } from '../models/auth.models';
+import { LsFields, LsLogin, LsRegister, LsResAuth, LsisAvaible } from '../models/auth.models';
 import { LsUser } from '@models/user.models';
 import { Router } from '@angular/router';
 import { noInterceptToken } from './token.service';
@@ -26,6 +26,10 @@ export class AuthService {
 
   login(data: LsLogin): Observable<LsResAuth>{
     return this.http.post<LsResAuth>(`${this.url}/login`, data)
+  }
+
+  register(data: LsRegister): Observable<LsResAuth>{
+    return this.http.post<LsResAuth>(`${this.url}/register`, data)
   }
 
   saveAuth(data: LsResAuth){
