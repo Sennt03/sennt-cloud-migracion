@@ -29,7 +29,7 @@ router.post('/validate/:field', fieldValidator, valueValidator, async (req, res,
     const { value } = req.body
     try{
         const isAvaible = await controller.validateField(field, value)
-        response(req, res, isAvaible)
+        response.success(req, res, isAvaible, 200)
     }catch(error){
         next(error)
     }
