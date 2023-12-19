@@ -75,6 +75,7 @@ export class LoginComponent {
       },
       error: (err) => {
         this.maskLoad.next(false)
+        toastr.setOption('timeOut', 3000)
         if (window.innerWidth < 768) toastr.setOption('positionClass', 'toast-top-center')
         toastr.error(err.error.message, 'Failed Login')
         toastr.setDefaultsOptions()

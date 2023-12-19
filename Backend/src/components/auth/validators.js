@@ -16,7 +16,17 @@ const loginSchema = Joi.object({
   password: password.required()
 });
 
+const fieldSchema = Joi.object({
+  field: field.required()
+})
+
+const valueSchema = Joi.object({
+  value: field.required()
+})
+
 const registerValidator = validatorHandler(registerSchema)
 const loginValidator = validatorHandler(loginSchema)
+const fieldValidator = validatorHandler(fieldSchema, 'params')
+const valueValidator = validatorHandler(valueSchema)
 
-module.exports = { registerValidator, loginValidator }
+module.exports = { registerValidator, loginValidator, fieldValidator, valueValidator }

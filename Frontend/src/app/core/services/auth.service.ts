@@ -2,9 +2,10 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/enviroment/enviroment';
 import { Observable, ObservableInput, catchError, throwError } from 'rxjs';
-import { LsLogin, LsResAuth } from '../models/auth.models';
+import { LsFields, LsLogin, LsResAuth, LsisAvaible } from '../models/auth.models';
 import { LsUser } from '@models/user.models';
 import { Router } from '@angular/router';
+import { noInterceptToken } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,16 @@ import { Router } from '@angular/router';
 export class AuthService {
 
   private url = `${environment.url_api}/auth`
-  private url_user = `${environment.url_api}/user`
+  private noToken = { context: noInterceptToken() }
 
   constructor(
     private http: HttpClient,
     private router: Router,
   ) { }
+
+  validateAvaible(data: string, field: LsFields): Observable<LsisAvaible>{
+    return this.http.post<LsisAvaible>(`${this.url}/validate/${field}`, {value: data}, this.noToken)
+  }
 
   login(data: LsLogin): Observable<LsResAuth>{
     return this.http.post<LsResAuth>(`${this.url}/login`, data)
@@ -38,9 +43,18 @@ export class AuthService {
     }
   }
 
-  getProfile(): Observable<LsUser>{
-    return this.http.get<LsUser>(this.url)
-    .pipe(catchError(err => { return this.handleError(err) }))
+  getAuth(): LsResAuth | boolean{
+    try{
+      return JSON.parse(localStorage.getItem('auth'))
+    }catch{
+      this.logout()
+      return false
+    }
+  }
+
+  getToken(): string{
+    const auth: any = this.getAuth()
+    return auth?.token
   }
 
   logout(){

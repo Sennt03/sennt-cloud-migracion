@@ -48,7 +48,29 @@ function createSendUser(user){
     }
 }
 
+async function validateField(field, value){
+    let exists
+    if(field === 'email'){
+        const re = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
+        if(!re.exec(value)) return { isAvailable: true }
+        exists = await store.findValidate(value)
+    }
+    // else if(field === 'username'){
+    //     exists = await store.findValidate(value, false)
+    // }
+    else{
+        throw myError('Field invalid', 400)
+    }
+
+    let isAvailable = exists ? false : true
+
+    return {
+        isAvailable
+    }
+}
+
 module.exports = {
     register,
-    login
+    login,
+    validateField
 }

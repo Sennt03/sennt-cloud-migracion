@@ -1,35 +1,71 @@
 <div class="auth register">
     <div class="container-xl">
         <div class="row">
-            <form class="col-md-7 form">
+            <form class="col-md-7 form" [formGroup]="form" (ngSubmit)="register()">
                 <div class="text">
                     Register in to <p>SenntCloud</p>
                 </div>
 
                 <div class="form-floating form-floating-custom mb-3">
-                    <input type="text" class="form-control" id="input-name" placeholder="Enter Name">
+                    <input formControlName="username" type="text" class="form-control" id="input-name" placeholder="Enter Name">
                     <label for="input-name">Name</label>
+
+                    <div *ngIf="haveErrors('username')" class="div-error">
+                        <div *ngIf="hasError('username', 'minlength')">
+                            *must have at least 3 letters
+                        </div>
+                        <div *ngIf="hasError('username', 'required')">
+                            *required
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-floating form-floating-custom mb-3">
-                    <input type="text" class="form-control" id="input-username" placeholder="Enter Email">
+                    <input formControlName="email" type="text" class="form-control" id="input-username" placeholder="Enter Email">
                     <label for="input-username">Email</label>
+
+                    <div *ngIf="haveErrors('email')" class="div-error">
+                        <div *ngIf="hasError('email', 'not_available')">
+                            *email is already in use
+                        </div>
+                        <div *ngIf="hasError('email', 'email')">
+                            *enter a valid email
+                        </div>
+                        <div *ngIf="hasError('email', 'required')">
+                            *required
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-floating form-floating-custom form-password auth-pass-inputgroup mb-3">
-                    <input type="password" class="form-control" id="password-input" placeholder="Enter Password">
+                    <input formControlName="password" type="password" class="form-control" id="password-input" placeholder="Enter Password">
                     <button (click)="togglePasswordVisibility()" type="button" class="btn btn-link position-absolute h-100 end-0 top-0" id="password-addon">
                         <i class="icon-password fa-regular fa-eye"></i>
                     </button>
                     <label for="input-password">Password</label>
+
+                    <div *ngIf="haveErrors('password')" class="div-error">
+                        <div *ngIf="hasError('password', 'minlength')">
+                            *must have at least 8 letters
+                        </div>
+                        <div *ngIf="hasError('password', 'required')">
+                            *required
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-floating form-floating-custom form-password auth-pass-inputgroup mb-3">
-                    <input type="password" class="form-control" id="conf-password-input" placeholder="Enter Confirm Password">
+                    <input formControlName="confirmPassword" type="password" class="form-control" id="conf-password-input" placeholder="Enter Confirm Password">
                     <button (click)="togglePasswordVisibility('conf-')" type="button" class="btn btn-link position-absolute h-100 end-0 top-0" id="conf-password-addon">
                         <i class="conf-icon-password fa-regular fa-eye"></i>
                     </button>
                     <label for="input-password">Confirm Password</label>
+
+                    <div *ngIf="form.get('confirmPassword').touched && form.errors" class="div-error">
+                        <div *ngIf="form.hasError('match_password')">
+                            *passwords don't match
+                        </div>
+                    </div>
                 </div>
                 <div class="mt-4">
                     <button class="btn btn-dark shadow-none w-100" type="submit">Register</button>
@@ -54,3 +90,5 @@
         </div>
     </div>
 </div>
+
+<app-loading [showEvent]="maskLoad"></app-loading>
