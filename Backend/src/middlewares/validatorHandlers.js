@@ -9,11 +9,11 @@ function cleanData(data){
   return data
 }
 
-function validatorHandler(schema) {
+function validatorHandler(schema, field = 'body') {
   return (req, res, next) => {
-    let data = req.body;
+    let data = req[field];
     data = cleanData(data)
-    const { error } = schema.validate(data, { abortEarly: true, allowUnknown: true });
+    const { error } = schema.validate(data, { abortEarly: false, allowUnknown: true });
     if (error) {
       next(myError(error, 400, error.details));
     }
