@@ -49,11 +49,17 @@ function createSendUser(user){
 }
 
 function findValidate(field, email = true) {
-    const regexField = new RegExp(`^${field}$`, 'i');
+    const escapedField = escapeRegExp(field);
+    const regexField = new RegExp(`^${escapedField}$`, 'i');
     const query = email ? { email: { $regex: regexField } } : { username: { $regex: regexField } };
   
     return store.findOne(query);
-  }
+}
+
+// Función para escapar caracteres especiales en una cadena
+function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
   
 
 async function validateField(field, value){
