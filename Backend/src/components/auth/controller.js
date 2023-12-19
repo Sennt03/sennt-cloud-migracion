@@ -48,12 +48,20 @@ function createSendUser(user){
     }
 }
 
+function findValidate(field, email = true){
+    if(email){
+        return store.findOne({email: {$regex: `^${field}$`, $options: 'i'}})
+    }else{
+        return store.findOne({username: {$regex: `^${field}$`, $options: 'i'}})
+    }
+}
+
 async function validateField(field, value){
     let exists
     if(field === 'email'){
         const re = new RegExp("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
         if(!re.exec(value)) return { isAvailable: true }
-        exists = await store.findValidate(value)
+        exists = await findValidate(value)
     }
     // else if(field === 'username'){
     //     exists = await store.findValidate(value, false)
