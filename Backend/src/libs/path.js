@@ -95,6 +95,8 @@ module.exports = {
     },
 
     getSize: function(size){
+        if(size == 0) return '0 MB'
+
         const sizeInKB = (size / 1024).toFixed(0)
 
         if (sizeInKB >= 1024 * 1024) {
