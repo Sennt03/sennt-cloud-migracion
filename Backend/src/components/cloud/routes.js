@@ -3,7 +3,6 @@ const controller = require('./controller')
 const response = require('../../network/response')
 const { verifyToken } = require('../../middlewares/authHandlers')
 const { uploadFileValidator, newPathValidator, nameValidator, pathValidator } = require('./validators')
-const { cloudPath } = require('../../config/config')
 
 // DETAIL
 router.get('/openDir/:path(*)?', verifyToken, (req, res, next) => {
@@ -17,6 +16,8 @@ router.get('/detailFile/:path(*)', verifyToken, pathValidator, async(req, res, n
 })
 
 router.get('/analytics', verifyToken, async(req, res, next) => {
+    const path = require('path')
+    const { cloudPath } = require('../../config/config')
     const pathComplete = path.join(cloudPath + req.user_id)
     response.process(req, res, next, controller.analitycsData, pathComplete)
 })
