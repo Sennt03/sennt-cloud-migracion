@@ -224,16 +224,17 @@ async function analitycsData(userId){
     const items = await fs.readdir(pathComplete)
 
     for (let i = 0; i < items.length; i++) {
-        const itemPath = path.join(pathComplete, items[i]);
+        // const itemPath = path.join(pathComplete, items[i])
+        const itemPath = items[i]
 
-        const stats = await fs.stat(itemPath);
+        const stats = await fs.stat(itemPath)
 
         if (stats.isDirectory()) {
             data.folders++
-            totalSize += await analitycsData(itemPath);
+            totalSize += await analitycsData(itemPath)
         } else {
             data.files++
-            totalSize += stats.size;
+            totalSize += stats.size
         }
     }
 
