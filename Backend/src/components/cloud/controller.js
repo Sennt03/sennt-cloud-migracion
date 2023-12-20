@@ -212,7 +212,8 @@ async function rename(userId, mipath, name){
     return { message: `"${nameOld}": Se renombro a "${name}", correctamente.` }
 }
 
-async function analitycsData(folderPath){
+async function analitycsData(folderPath, loop = false){
+    // const pathComplete = path.join(cloudPath + userId)
     const data = {
         totalSize: 0,
         folders: 0,
@@ -229,7 +230,7 @@ async function analitycsData(folderPath){
 
         if (stats.isDirectory()) {
             data.folders++
-            totalSize += (await analitycsData(itemPath)).totalSize
+            totalSize += await analitycsData(itemPath, true)
         } else {
             data.files++
             totalSize += stats.size
@@ -238,7 +239,7 @@ async function analitycsData(folderPath){
 
     data.totalSize = getSize(totalSize)
 
-    return data
+    return loop ? totalSize : data
 }
 
 module.exports = {
