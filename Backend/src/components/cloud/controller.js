@@ -224,8 +224,8 @@ async function analitycsData(userId){
     const items = await fs.readdir(pathComplete)
 
     for (let i = 0; i < items.length; i++) {
-        // const itemPath = path.join(pathComplete, items[i])
-        const itemPath = items[i]
+        console.log('ITEMEEEEMS', items)
+        const itemPath = path.join(pathComplete, items[i])
 
         const stats = await fs.stat(itemPath)
 
