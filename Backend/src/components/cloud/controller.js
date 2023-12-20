@@ -8,12 +8,12 @@ async function registerDir(userId){
     const pathComplete = path.join(cloudPath + userId)
     try{
         await fs.mkdir(pathComplete)
-        return {message: '!Bienvenido¡'}
     }catch(e){
         if(e.code != 'EEXIST'){
             throw myError('Ha ocurrido un error al registrar el espacio', 500)
         }
     }
+    return {message: '!Bienvenido¡'}
 }
 
 async function openDir(userId, mipath){
@@ -212,6 +212,36 @@ async function rename(userId, mipath, name){
     return { message: `"${nameOld}": Se renombro a "${name}", correctamente.` }
 }
 
+async function analitycsData(userId){
+    const pathComplete = path.join(cloudPath + userId)
+    const data = {
+        totalSize: 0,
+        folders: 0,
+        files: 0
+    }
+    let totalSize = 0;
+
+    const items = await fs.readdir(pathComplete)
+
+    for (let i = 0; i < items.length; i++) {
+        const itemPath = path.join(folderPath, items[i]);
+
+        const stats = await fs.stat(itemPath);
+
+        if (stats.isDirectory()) {
+            data.folders++
+            totalSize += await analitycsData(itemPath);
+        } else {
+            data.files++
+            totalSize += stats.size;
+        }
+    }
+
+    data.totalSize = getSize(totalSize)
+
+    return data
+}
+
 module.exports = {
     registerDir,
     openDir,
@@ -223,5 +253,6 @@ module.exports = {
     deleteFile,
     copy,
     move,
-    rename
+    rename,
+    analitycsData
 }

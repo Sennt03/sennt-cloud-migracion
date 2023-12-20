@@ -1,0 +1,103 @@
+<div class="sidebar">
+    <div class="logo-details">
+      <!-- <i class="bx bxl-c-plus-plus icon"></i> -->
+      <!-- <i class="bx bxl-cloud icon"></i> -->
+      <i class="fa-solid fa-cloud-arrow-up icon"></i>
+      <div class="logo_name">SenntCloud</div>
+      <i class="bx bx-menu" id="btn" (click)="menuToggle()"></i>
+    </div>
+    <ul class="nav-list">
+        <!-- <li>
+            <i class="bx bx-search"></i>
+            <input type="text" placeholder="Search..." />
+            <span class="tooltip">Search</span>
+        </li> -->
+        <li>
+            <a routerLink="/">
+            <i class="bx bx-grid-alt"></i>
+            <span class="links_name">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li>
+        <li>
+            <a routerLink="/folders">
+            <i class="bx bx-folder"></i>
+            <span class="links_name">All Folders</span>
+            </a>
+            <span class="tooltip">All Folders</span>
+        </li>
+        <li>
+            <a routerLink="/files">
+            <i class="bx bx-file"></i>
+            <span class="links_name">All Files</span>
+            </a>
+            <span class="tooltip">All Files</span>
+        </li>
+        <!-- <li>
+            <a href="#">
+            <i class="bx bx-user"></i>
+            <span class="links_name">User</span>
+            </a>
+            <span class="tooltip">User</span>
+        </li>
+        <li>
+            <a href="#">
+            <i class="bx bx-chat"></i>
+            <span class="links_name">Messages</span>
+            </a>
+            <span class="tooltip">Messages</span>
+        </li> -->
+        <li>
+            <a (click)="collapseAnalitycs()" class="analitycs">
+                <i class="bx bx-pie-chart-alt-2"></i>
+                <span class="links_name">Analytics</span>
+                <i class="bx bxs-chevron-down"></i>
+            </a>
+            <span class="tooltip">Analytics</span>
+        </li>
+        
+        <div class="collapse-analytics">
+            <div class="analytic">
+                <p class="title">Space used: 85MB</p>
+            </div>
+            <div class="analytic">
+                <p class="title">Folders: 4</p>
+            </div>
+            <div class="analytic">
+                <p class="title last">Files: 6</p>
+            </div>
+        </div>
+        <!-- <li>
+            <a href="#">
+            <i class="bx bx-heart"></i>
+            <span class="links_name">Saved</span>
+            </a>
+            <span class="tooltip">Saved</span>
+        </li> -->
+        <li>
+            <a routerLink="/settings">
+            <i class="bx bx-cog"></i>
+            <span class="links_name">Settings</span>
+            </a>
+            <span class="tooltip">Settings</span>
+        </li>
+        <li class="profile">
+            <div class="profile-details">
+            <!-- <img src="profile.jpg" alt="profileImg" /> -->
+            <!-- <div class="name_job"> -->
+                <div class="name">{{ user.username }}</div>
+                <!-- <div class="job">Logout</div> -->
+            <!-- </div> -->
+            </div>
+            <i class="bx bx-log-out" id="log_out" (click)="logout()"></i>
+            <span class="tooltip">Logout</span>
+        </li>
+    </ul>
+</div>
+
+<section class="home-section">
+    <router-outlet></router-outlet>
+    <!-- <div class="text">Dashboard</div> -->
+</section>
+
+<app-loading [showEvent]="maskLoad"></app-loading>

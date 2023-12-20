@@ -61,6 +61,11 @@ export class AuthService {
     return auth?.token
   }
 
+  loggedIn(){
+    const token = this.getAuth() as LsResAuth
+    return token ? true : false
+  }
+
   logout(){
     localStorage.removeItem('auth')
     this.router.navigate(['/auth/login'])

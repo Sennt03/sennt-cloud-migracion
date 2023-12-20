@@ -15,6 +15,10 @@ router.get('/detailFile/:path(*)', verifyToken, pathValidator, async(req, res, n
     response.process(req, res, next, controller.detailFile, req.user._id, path)
 })
 
+router.get('/analytics', verifyToken, async(req, res, next) => {
+    response.process(req, res, next, controller.analitycsData, req.user._id)
+})
+
 // UPLOAD & DOWLOAD
 router.post('/createDir/:path(*)?', verifyToken, nameValidator, async(req, res, next) => {
     const path = req.params.path || ''
