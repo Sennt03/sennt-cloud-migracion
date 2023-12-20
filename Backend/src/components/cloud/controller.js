@@ -212,8 +212,8 @@ async function rename(userId, mipath, name){
     return { message: `"${nameOld}": Se renombro a "${name}", correctamente.` }
 }
 
-async function analitycsData(userId){
-    const pathComplete = path.join(cloudPath + userId)
+async function analitycsData(folderPath){
+    // const pathComplete = path.join(cloudPath + userId)
     const data = {
         totalSize: 0,
         folders: 0,
@@ -221,11 +221,10 @@ async function analitycsData(userId){
     }
     let totalSize = 0;
 
-    const items = await fs.readdir(pathComplete)
+    const items = await fs.readdir(folderPath)
 
     for (let i = 0; i < items.length; i++) {
-        console.log('ITEMEEEEMS', items)
-        const itemPath = path.join(pathComplete, items[i])
+        const itemPath = path.join(folderPath, items[i])
 
         const stats = await fs.stat(itemPath)
 
