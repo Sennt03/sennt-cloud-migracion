@@ -213,7 +213,6 @@ async function rename(userId, mipath, name){
 }
 
 async function analitycsData(folderPath){
-    // const pathComplete = path.join(cloudPath + userId)
     const data = {
         totalSize: 0,
         folders: 0,
@@ -230,7 +229,7 @@ async function analitycsData(folderPath){
 
         if (stats.isDirectory()) {
             data.folders++
-            totalSize += await analitycsData(itemPath)
+            totalSize += (await analitycsData(itemPath)).totalSize
         } else {
             data.files++
             totalSize += stats.size
