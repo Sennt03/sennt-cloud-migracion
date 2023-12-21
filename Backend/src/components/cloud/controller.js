@@ -212,34 +212,36 @@ async function rename(userId, mipath, name){
     return { message: `"${nameOld}": Se renombro a "${name}", correctamente.` }
 }
 
-async function analitycsData(folderPath, loop = false){
-    // const pathComplete = path.join(cloudPath + userId)
-    const data = {
-        totalSize: 0,
-        folders: 0,
-        files: 0
-    }
-    let totalSize = 0;
+async function analitycsData(ruta) {
+    let totalArchivos = 0;
+    let totalCarpetas = 0;
+    let tamañoTotal = 0;
 
-    const items = await fs.readdir(folderPath)
+    // Función auxiliar para recorrer de manera recursiva las carpetas.
+    async function recorrerDirectorio(dir) {
+        const files = await fs.promises.readdir(dir);
 
-    for (let i = 0; i < items.length; i++) {
-        const itemPath = path.join(folderPath, items[i])
+        for (const file of files) {
+            const filePath = path.join(dir, file);
+            const stats = await fs.promises.stat(filePath);
 
-        const stats = await fs.stat(itemPath)
-
-        if (stats.isDirectory()) {
-            data.folders++
-            totalSize += await analitycsData(itemPath, true)
-        } else {
-            data.files++
-            totalSize += stats.size
+            if (stats.isDirectory()) {
+                totalCarpetas++;
+                await recorrerDirectorio(filePath); // Llamada recursiva para subdirectorios.
+            } else if (stats.isFile()) {
+                totalArchivos++;
+                tamañoTotal += stats.size; // Agregar tamaño del archivo.
+            }
         }
     }
 
-    data.totalSize = getSize(totalSize)
+    await recorrerDirectorio(ruta);
 
-    return loop ? totalSize : data
+    return {
+        files: totalArchivos,
+        folders: totalCarpetas,
+        totalSize: getSize(tamañoTotal)
+    };
 }
 
 module.exports = {
