@@ -214,6 +214,7 @@ async function rename(userId, mipath, name){
 
 async function analitycsData(userId) {
     const ruta = path.join(cloudPath, userId)
+    
     let totalArchivos = 0;
     let totalCarpetas = 0;
     let tamañoTotal = 0;
