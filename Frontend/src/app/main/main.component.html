@@ -58,13 +58,13 @@
         
         <div class="collapse-analytics">
             <div class="analytic">
-                <p class="title">Space used: 85MB</p>
+                <p class="title">Space used: {{ user.analytics.totalSize }}</p>
             </div>
             <div class="analytic">
-                <p class="title">Folders: 4</p>
+                <p class="title">Folders: {{ user.analytics.folders }}</p>
             </div>
             <div class="analytic">
-                <p class="title last">Files: 6</p>
+                <p class="title last">Files: {{ user.analytics.files }}</p>
             </div>
         </div>
         <!-- <li>
