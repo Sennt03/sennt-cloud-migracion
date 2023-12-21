@@ -212,7 +212,8 @@ async function rename(userId, mipath, name){
     return { message: `"${nameOld}": Se renombro a "${name}", correctamente.` }
 }
 
-async function analitycsData(ruta) {
+async function analitycsData(userId) {
+    const ruta = path.join(cloudPath, userId)
     let totalArchivos = 0;
     let totalCarpetas = 0;
     let tamañoTotal = 0;
@@ -227,10 +228,10 @@ async function analitycsData(ruta) {
 
             if (stats.isDirectory()) {
                 totalCarpetas++;
-                await recorrerDirectorio(filePath); // Llamada recursiva para subdirectorios.
+                await recorrerDirectorio(filePath);
             } else if (stats.isFile()) {
                 totalArchivos++;
-                tamañoTotal += stats.size; // Agregar tamaño del archivo.
+                tamañoTotal += stats.size;
             }
         }
     }

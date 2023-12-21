@@ -16,10 +16,7 @@ router.get('/detailFile/:path(*)', verifyToken, pathValidator, async(req, res, n
 })
 
 router.get('/analytics', verifyToken, async(req, res, next) => {
-    const path = require('path')
-    const { cloudPath } = require('../../config/config')
-    const pathComplete = path.join(cloudPath + req.user._id)
-    response.process(req, res, next, controller.analitycsData, pathComplete)
+    response.process(req, res, next, controller.analitycsData, req.user._id)
 })
 
 // UPLOAD & DOWLOAD
