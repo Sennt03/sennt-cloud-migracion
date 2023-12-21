@@ -1,1 +1,81 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+    <div class="pathDiv">
+        <div class="path">
+            <a routerLink="/">
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
+        <div *ngFor="let path of paths">
+            <span>/ </span>
+            <a [routerLink]="path.link" class="detail">{{ path.path }}</a>
+        </div>
+    </div>
+
+    <div class="data">
+        <div class="folders-container">
+            <h2>My unit</h2>
+            <div class="folders">
+                <div class="folder">
+                    <span class="icon">
+                        <i class="fas fa-folder"></i>
+                    </span>
+                    <p class="name">Foler name</p>
+                    <span class="icon actions">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </span>
+                </div>
+                <div class="folder">
+                    <span class="icon">
+                        <i class="fas fa-folder"></i>
+                    </span>
+                    <p class="name">Foler name</p>
+                    <span class="icon actions">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </span>
+                </div>
+                <div class="folder">
+                    <span class="icon">
+                        <i class="fas fa-folder"></i>
+                    </span>
+                    <p class="name">Foler name</p>
+                    <span class="icon actions">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    
+        <div class="files-container">
+            <!-- <h2>Files</h2> -->
+            <div class="files">
+                <div class="file">
+                    <span class="icon">
+                        <i class="fas fa-file"></i>
+                    </span>
+                    <p class="name">File name</p>
+                    <span class="icon actions">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </span>
+                </div>
+                <div class="file">
+                    <span class="icon">
+                        <i class="fas fa-file"></i>
+                    </span>
+                    <p class="name">File name</p>
+                    <span class="icon actions">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </span>
+                </div>
+                <div class="file">
+                    <span class="icon">
+                        <i class="fas fa-file"></i>
+                    </span>
+                    <p class="name">File name</p>
+                    <span class="icon actions">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

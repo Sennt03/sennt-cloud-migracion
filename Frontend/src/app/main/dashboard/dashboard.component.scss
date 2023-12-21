@@ -1,0 +1,65 @@
+.dashboard{
+    width: 90%;
+    height: 92vh;
+    background: #FFF;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    top: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.pathDiv{
+    display: flex;
+    gap: 0 5px;
+    font-size: 17px;
+}
+
+.files-container h2,
+.folders-container h2{
+    margin: 10px 0;
+}
+
+.files,
+.folders{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.file,
+.folder,
+.pathDiv a{
+    color: #0000008a;
+}
+
+.file:hover,
+.folder:hover,
+.pathDiv a:hover{
+    color: #00000061;
+}
+
+.file,
+.folder{
+    display: flex;
+    gap: 0 15px;
+    width: 200px;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 12px;
+    font-size: 19px;
+    height: 50px;
+    margin: 0 5px 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.file p,
+.folder p{
+    margin: 0;
+    font-size: 19px;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

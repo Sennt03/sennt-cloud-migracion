@@ -1,4 +1,5 @@
 const extensionToIcon = {
+  default: 'fa-file'
   txt: 'fa-file-alt',
   doc: 'fa-file-word',
   docx: 'fa-file-word',
@@ -18,6 +19,5 @@ const extensionToIcon = {
   wav: 'fa-file-audio',
   mp4: 'fa-file-video',
   avi: 'fa-file-video',
-  mkv: 'fa-file-video',
-  // ... puedes agregar más según tus necesidades
-};
+  mkv: 'fa-file-video'
+}
