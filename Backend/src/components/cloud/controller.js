@@ -219,11 +219,11 @@ async function analitycsData(ruta) {
 
     // Función auxiliar para recorrer de manera recursiva las carpetas.
     async function recorrerDirectorio(dir) {
-        const files = await fs.promises.readdir(dir);
+        const files = await fs.readdir(dir);
 
         for (const file of files) {
             const filePath = path.join(dir, file);
-            const stats = await fs.promises.stat(filePath);
+            const stats = await fs.stat(filePath);
 
             if (stats.isDirectory()) {
                 totalCarpetas++;
