@@ -26,12 +26,13 @@ async function login({ email, password }){
     const user = await store.findOne({ email })
     
     if(!user){
-        throw myError('Unauthorized', 401)
+        // throw myError('Unauthorized', 401)
+        throw myError('Invalid Credentials', 401)
     }
 
     const isMatch = await bcrypt.compare(password, user.password)
     if(!isMatch){
-        throw myError('Unauthorized', 401)
+        throw myError('Invalid Credentials', 401)
     }
 
     await cloudController.registerDir(user._id)

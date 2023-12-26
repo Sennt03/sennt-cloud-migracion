@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { extensionToIcon } from '@models/dashboard.models';
+import { LsOpenDir, extensionToIcon } from '@models/dashboard.models';
 import { DashboardService } from '@services/dashboard.service';
 import toastr from '@shared/utils/toastr';
 import { Subject } from 'rxjs';
@@ -21,8 +21,13 @@ export class DashboardComponent implements OnInit{
     link: string
   }[] = []
 
-  folders: string[] = []
-  files: string[] = []
+  data: LsOpenDir = {
+    path: '',
+    content: {
+      directories: [],
+      files: []
+    }
+  }
 
   constructor(
     private router: Router,
@@ -63,20 +68,16 @@ export class DashboardComponent implements OnInit{
     return extensionToIcon[ext] ?? extensionToIcon['default']
   }
 
-  detailOrNavigate(path: string, folder = true){
+  navigateFolder(path: string){
     const newPath = this.path + '/' + path
-    console.log('entro', newPath)
-    if(!folder) this.detailFile()
-    else this.router.navigate([`/r/${newPath}`])
+    this.router.navigate([`/r/${newPath}`])
   }
 
   openDir(){
     this.maskLoad.next(true)
     this.dashBoardService.openDir(this.path).subscribe({
       next: (res) => {
-        console.log(res)
-        this.folders = res.content.directories
-        this.files = res.content.files
+        this.data = res
       },
       error: (err) => {
         toastr.error('Forbidden.', '')
@@ -89,8 +90,9 @@ export class DashboardComponent implements OnInit{
     })
   }
 
-  detailFile(){
-    console.log('detail')
+  detailFile(path: string){
+    const newPath = this.path + '/' + path
+    console.log('Detail: ', newPath)
   }
 
 }

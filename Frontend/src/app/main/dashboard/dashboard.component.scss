@@ -8,6 +8,8 @@
     top: 20px;
     border-radius: 5px;
     overflow: hidden;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
 }
 
 .pathDiv{
@@ -71,4 +73,12 @@
     height: 100%;
     align-items: center;
     gap: 15px;
+}
+
+.empty{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 18px;
 }
