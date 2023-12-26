@@ -11,11 +11,13 @@ async function register(user){
     const password = await bcrypt.hash(user.password, 10)
     user.password = password
     const newUser = await store.addOne(user)
+
+    await cloudController.registerDir(newUser._id)
+    
     const sendUser = await createSendUser(newUser)
 
     const token = jwt.sign(sendUser, config.jwtSecret, { expiresIn: '6h' })
 
-    await cloudController.registerDir(sendUser._id)
     
     return { user: sendUser, token }
 }
@@ -32,10 +34,11 @@ async function login({ email, password }){
         throw myError('Unauthorized', 401)
     }
 
+    await cloudController.registerDir(user._id)
+
     const sendUser = await createSendUser(user)
     const token = jwt.sign(sendUser, config.jwtSecret, { expiresIn: '6h' })    
     
-    await cloudController.registerDir(sendUser._id)
 
     return { user: sendUser, token }
 }

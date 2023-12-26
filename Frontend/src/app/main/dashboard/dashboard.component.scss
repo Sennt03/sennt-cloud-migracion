@@ -33,8 +33,8 @@
     color: #0000008a;
 }
 
-.file:hover,
-.folder:hover,
+.file-name:hover,
+.folder-name:hover,
 .pathDiv a:hover{
     color: #00000061;
 }
@@ -62,4 +62,13 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.file-name,
+.folder-name{
+    display: flex;
+    max-width: 80%;
+    height: 100%;
+    align-items: center;
+    gap: 15px;
 }

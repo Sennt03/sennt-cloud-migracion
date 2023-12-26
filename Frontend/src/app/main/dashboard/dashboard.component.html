@@ -15,32 +15,14 @@
         <div class="folders-container">
             <h2>My unit</h2>
             <div class="folders">
-                <div class="folder">
-                    <span class="icon">
-                        <i class="fas fa-folder"></i>
-                    </span>
-                    <p class="name">Foler name</p>
-                    <span class="icon actions">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                </div>
-                <div class="folder">
-                    <span class="icon">
-                        <i class="fas fa-folder"></i>
-                    </span>
-                    <p class="name">Foler name</p>
-                    <span class="icon actions">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                </div>
-                <div class="folder">
-                    <span class="icon">
-                        <i class="fas fa-folder"></i>
-                    </span>
-                    <p class="name">Foler name</p>
-                    <span class="icon actions">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </span>
+                <div class="folder" *ngFor="let folder of folders">
+                    <div (click)="detailOrNavigate(folder)" class="folder-name" data-toggle="tooltip" data-placement="bottom" title="{{ folder }}">
+                        <span class="icon">
+                            <i class="fas fa-folder"></i>
+                        </span>
+                        <p class="name">{{ folder }}</p>
+                    </div>
+                    <app-actions path="{{ folder }}"></app-actions>
                 </div>
             </div>
         </div>
@@ -48,34 +30,22 @@
         <div class="files-container">
             <!-- <h2>Files</h2> -->
             <div class="files">
-                <div class="file">
-                    <span class="icon">
-                        <i class="fas fa-file"></i>
-                    </span>
-                    <p class="name">File name</p>
-                    <span class="icon actions">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                </div>
-                <div class="file">
-                    <span class="icon">
-                        <i class="fas fa-file"></i>
-                    </span>
-                    <p class="name">File name</p>
-                    <span class="icon actions">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </span>
-                </div>
-                <div class="file">
-                    <span class="icon">
-                        <i class="fas fa-file"></i>
-                    </span>
-                    <p class="name">File name</p>
-                    <span class="icon actions">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </span>
+                <div class="file" *ngFor="let file of files">
+                    <div class="file-name" (click)="detailOrNavigate(file, false)" data-toggle="tooltip" data-placement="bottom" title="{{ file }}">
+                        <span class="icon">
+                            <i class="fas {{ getIcon(file) }}"></i>
+                        </span>
+                        <p class="name">{{ file }}</p>
+                    </div>
+                    <app-actions path="{{ file }}"></app-actions>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="empty" *ngIf="folders.length < 1 && files.length < 1 && !loading">
+        Vacio
+    </div>
+
+    <app-loading [showEvent]="maskLoad"></app-loading>
 </div>
