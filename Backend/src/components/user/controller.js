@@ -1,4 +1,5 @@
 // const myError = require('../../libs/myError')
+const bcrypt = require('bcrypt')
 const Model = require('./model')
 const Store = require('../../db/store')
 const store = new Store(Model)
@@ -28,7 +29,7 @@ async function changePassword(userId, passwords){
     const updateObj = { 
         password: await bcrypt.hash(newPassword, 10) 
     }
-    
+
     return store.updateOne(userId, updateObj)
 }
 
