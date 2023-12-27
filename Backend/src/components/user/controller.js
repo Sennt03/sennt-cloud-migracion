@@ -1,4 +1,4 @@
-// const myError = require('../../libs/myError')
+const myError = require('../../libs/myError')
 const bcrypt = require('bcrypt')
 const Model = require('./model')
 const Store = require('../../db/store')
