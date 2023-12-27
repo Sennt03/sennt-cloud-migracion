@@ -25,6 +25,10 @@ class Store{
         return this.Model[query](dataQuery, options = {})
         // return Model.find({email: 'davidrsmk'})
     }
+
+    updateOne(id, update){
+        return this.Model.findByIdAndUpdate(id, update, { returnOriginal: false })
+    }
 }
 
 module.exports = Store

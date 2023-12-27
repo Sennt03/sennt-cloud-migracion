@@ -12,6 +12,27 @@ async function getUser(id){
     return user
 }
 
+async function changePassword(userId, passwords){
+    const { actual, newPassword } = passwords
+    const user = await store.findOneById(userId)
+
+    if(!user) throw myError("User doesn't exist", 400)
+    
+    const { password } = user
+    
+    const isMatch = await bcrypt.compare(actual, password)
+    if(!isMatch){
+        throw myError('The current password is incorrect', 400)
+    }
+
+    const updateObj = { 
+        password: await bcrypt.hash(newPassword, 10) 
+    }
+    
+    return store.updateOne(userId, updateObj)
+}
+
 module.exports = {
-    getUser
+    getUser,
+    changePassword
 }
