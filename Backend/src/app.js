@@ -34,7 +34,7 @@ class App{
     }
 
     errHandlers(){
-        // this.app.use(errHandler.logErrors)
+        this.app.use(errHandler.logErrors)
         this.app.use(errHandler.errorHandler)
     }
 
