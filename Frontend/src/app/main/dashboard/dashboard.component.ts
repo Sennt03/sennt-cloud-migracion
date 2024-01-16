@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { LsOpenDir, extensionToIcon } from '@models/dashboard.models';
 import { DashboardService } from '@services/dashboard.service';
 import toastr from '@shared/utils/toastr';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit, OnDestroy{
 
   maskLoad = new Subject<boolean>()
   loading = true
   path: string
+  urlSubscription: Subscription
 
   paths: {
     path: string,
@@ -37,11 +38,15 @@ export class DashboardComponent implements OnInit{
 
   ngOnInit(): void {
     this.processURL()
-    this.router.events.subscribe(event => {
+    this.urlSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.processURL();
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.urlSubscription.unsubscribe()
   }
 
   processURL() {
@@ -80,7 +85,7 @@ export class DashboardComponent implements OnInit{
         this.data = res
       },
       error: (err) => {
-        toastr.error('Forbidden.', '')
+        toastr.error(`/${this.path} - Forbidden.`, '')
         this.router.navigate([`/`])
       },
       complete: () => {

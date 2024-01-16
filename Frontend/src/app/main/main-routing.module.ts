@@ -9,6 +9,10 @@ const routes: Routes = [
     component: MainComponent,
     children: [
       {
+        path: 'settings',
+        loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule)
+      },
+      {
         path: '**',
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
         canActivate: [pathGuard]
