@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { LsResAuth } from '@models/auth.models';
 import { LsUser } from '@models/user.models';
 import { AuthService } from '@services/auth.service';
+import { UserService } from '@services/user.service';
 import toastr from '@shared/utils/toastr';
-import { Subject } from 'rxjs';
+import { Subject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -16,7 +17,8 @@ export class MainComponent implements OnInit {
   user: LsUser
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ){}
 
   ngOnInit(): void {
@@ -31,6 +33,12 @@ export class MainComponent implements OnInit {
 
     const auth = this.authService.getAuth() as LsResAuth
     this.user = auth.user
+
+    this.userService.userProfile.pipe(
+      switchMap(() => this.userService.getProfile()),
+    ).subscribe(res => {
+      this.user = res
+    });
   }
 
   menuToggle(open = false){

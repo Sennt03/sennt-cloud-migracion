@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 import { NavigationEnd, Router } from '@angular/router';
 import { LsOpenDir, extensionToIcon } from '@models/dashboard.models';
 import { DashboardService } from '@services/dashboard.service';
+import { UserService } from '@services/user.service';
 import toastr from '@shared/utils/toastr';
 import { Subject, Subscription } from 'rxjs';
 
@@ -11,6 +13,8 @@ import { Subject, Subscription } from 'rxjs';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit, OnDestroy{
+
+  viewTable = true
 
   maskLoad = new Subject<boolean>()
   loading = true
@@ -30,10 +34,15 @@ export class DashboardComponent implements OnInit, OnDestroy{
     }
   }
 
+  sortedDirectories = []
+  sortedFiles = []
+
   constructor(
     private router: Router,
-    private dashBoardService: DashboardService
+    private dashBoardService: DashboardService,
+    private userService: UserService
   ){
+    if (window.innerWidth < 768) this.viewTable = false
   }
 
   ngOnInit(): void {
@@ -78,11 +87,97 @@ export class DashboardComponent implements OnInit, OnDestroy{
     this.router.navigate([`/r/${newPath}`])
   }
 
+  newActionUploaded(){
+    this.openDir()
+    this.userService.userProfile.emit(true)
+  }
+
+  compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
+    if (typeof a === 'string' && typeof b === 'string') {
+      const dateA = new Date(a);
+      const dateB = new Date(b);
+      if (!isNaN(dateA.getTime()) && !isNaN(dateB.getTime())) {
+        a = dateA;
+        b = dateB;
+      }
+    } else if (a instanceof Date && b instanceof Date) {
+      a = a.getTime();
+      b = b.getTime();
+    }
+
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  getDate(dateString: Date){
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    };
+
+    const date = new Date(dateString);
+    const formattedDate = new Intl.DateTimeFormat('es-ES', options).format(date);
+
+    return formattedDate;
+  }
+
+  getSize(size){
+    if(size == 0) return '0 MB'
+
+    const sizeInKB: any = (size / 1024).toFixed(0)
+
+    if (sizeInKB >= 1024 * 1024) {
+        const sizeInGB = (sizeInKB / (1024 * 1024)).toFixed(2);
+        return `${sizeInGB} GB`;
+    } 
+    
+    if (sizeInKB >= 1024) {
+        const sizeInMB = (sizeInKB / 1024).toFixed(2);
+        return `${sizeInMB} MB`;
+    }
+    
+    return `${sizeInKB} KB`;
+  }
+
+  sortDirectories(sort: Sort) {
+    this.sortData(sort, 'directories')
+  }
+  
+  sortFiles(sort: Sort) {
+    this.sortData(sort, 'files')
+  }
+
+  sortData(sort: Sort, type: 'files' | 'directories'){
+    const data = this.data.content[type].slice();
+    const sortedArray = type == 'files' ? 'sortedFiles' : 'sortedDirectories'
+
+    if (!sort || !sort.active || sort.direction === '') {
+      this[sortedArray] = data;
+      return;
+    }
+  
+    this[sortedArray] = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'name':
+          return this.compare(a.name, b.name, isAsc);
+        case 'size':
+          return this.compare(a.size, b.size, isAsc);
+        case 'date':
+          return this.compare(a.createdAt, b.createdAt, isAsc);
+        default:
+          return 0;
+      }
+    });
+  }
+
   openDir(){
     this.maskLoad.next(true)
     this.dashBoardService.openDir(this.path).subscribe({
       next: (res) => {
         this.data = res
+        this.sortDirectories(null)
+        this.sortFiles(null)
       },
       error: (err) => {
         toastr.error(`/${this.path} - Forbidden.`, '')
@@ -93,11 +188,6 @@ export class DashboardComponent implements OnInit, OnDestroy{
         this.maskLoad.next(false)
       }
     })
-  }
-
-  detailFile(path: string){
-    const newPath = this.path + '/' + path
-    console.log('Detail: ', newPath)
   }
 
 }

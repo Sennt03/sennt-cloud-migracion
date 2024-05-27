@@ -1,0 +1,40 @@
+<!-- <button mat-raised-button (click)="openBottomSheet()">Open file</button> -->
+
+<div class="button-container">
+    <!-- <button mat-fab color="primary" (click)="openBottomSheet()" class="button_upload"> -->
+    <button mat-fab color="primary" (click)="openBottomSheet()" class="button_upload">
+      <mat-icon>add</mat-icon>
+    </button>
+
+    <mat-accordion id="accordion-uploading">
+      <mat-expansion-panel #expansionPanel (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ progressUpload.text }}
+          </mat-panel-title>
+          <mat-panel-description>
+            <mat-progress-bar mode="determinate" [value]="progressUpload.value" *ngIf="progressUpload.loading"></mat-progress-bar>
+            <mat-icon class="icon-close-upload" (click)="closeAccordion()" *ngIf="!progressUpload.loading">close</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!-- Cuando se ve -->
+        <p *ngIf="progressUpload.loading">Uploading files, please wait a moment</p>
+        <mat-list>
+          <mat-list-item *ngFor="let file of progressUpload.uploaded">
+            <mat-icon matListItemIcon [ngStyle]="{
+              color: file.status == 200 ? '#0f9b0f' : '#af1313'
+            }">{{ file.status == 200 ? 'check' : 'close' }}</mat-icon>
+            <div matListItemTitle>{{ file.name }}</div>
+            <div matListItemLine class="message-uploaded">{{ file.message }}</div>
+          </mat-list-item>
+        </mat-list>
+        
+      
+      </mat-expansion-panel>
+    </mat-accordion>
+    
+</div>
+
+<input type="file" name="file" id="file" (change)="uploadFile($event)" multiple="true">

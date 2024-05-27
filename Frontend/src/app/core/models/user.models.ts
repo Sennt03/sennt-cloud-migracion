@@ -5,7 +5,8 @@ export interface LsUser{
     analytics: {
         files: number,
         folders: number,
-        totalSize: string
+        totalSize: string,
+        maxCloudSize: string
     }
 }
 

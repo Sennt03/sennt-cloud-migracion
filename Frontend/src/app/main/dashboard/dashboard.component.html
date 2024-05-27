@@ -12,34 +12,92 @@
     </div>
 
     <div class="data">
-        <div class="folders-container">
-            <h2>My unit</h2>
-            <div class="folders">
-                <div class="folder" *ngFor="let folder of data.content.directories">
-                    <div (click)="navigateFolder(folder)" class="folder-name" data-toggle="tooltip" data-placement="bottom" title="{{ folder }}">
-                        <span class="icon">
-                            <i class="fas fa-folder"></i>
-                        </span>
-                        <p class="name">{{ folder }}</p>
+        <h2>
+            My unit
+            
+            <mat-slide-toggle [(ngModel)]="viewTable">View Table</mat-slide-toggle>
+        </h2>
+
+        <!-- View Simple -->
+        <div class="data-container" *ngIf="!viewTable">
+            <div class="folders-container">
+                <div class="folders">
+                    <div class="folder" *ngFor="let folder of data.content.directories">
+                        <div (click)="navigateFolder(folder.name)" class="folder-name" data-toggle="tooltip" data-placement="bottom" title="{{ folder }}">
+                            <span class="icon">
+                                <i class="fas fa-folder"></i>
+                            </span>
+                            <p class="name">{{ folder.name }}</p>
+                        </div>
+                        <app-actions path="{{ folder.name }}"></app-actions>
                     </div>
-                    <app-actions path="{{ folder }}"></app-actions>
+                </div>
+            </div>
+        
+            <div class="files-container">
+                <div class="files">
+                    <div class="file" *ngFor="let file of data.content.files">
+                        <div class="file-name" data-toggle="tooltip" data-placement="bottom" title="{{ file }}">
+                            <span class="icon">
+                                <i class="fas {{ getIcon(file.name) }}"></i>
+                            </span>
+                            <p class="name">{{ file.name }}</p>
+                        </div>
+                        <app-actions path="{{ file.name }}" [isFile]="true"></app-actions>
+                    </div>
                 </div>
             </div>
         </div>
-    
-        <div class="files-container">
-            <!-- <h2>Files</h2> -->
-            <div class="files">
-                <div class="file" *ngFor="let file of data.content.files">
-                    <div class="file-name" (click)="detailFile(file)" data-toggle="tooltip" data-placement="bottom" title="{{ file }}">
+
+        <!-- View Table -->
+        <div class="data-container" *ngIf="viewTable">
+            <table matSort (matSortChange)="sortDirectories($event)" class="table" *ngIf="data.content.directories.length > 0 || loading">
+                <tr>
+                  <th width="5%"></th>
+                  <th width="45%" mat-sort-header="name">Name</th>
+                  <th width="15%">Size</th>
+                  <th width="15%" mat-sort-header="date">Date</th>
+                  <th width="20%">Actions</th>
+                </tr>
+              
+                <tr *ngFor="let folder of sortedDirectories" class="containerDir">
+                    <td class="open" (click)="navigateFolder(folder.name)">
                         <span class="icon">
-                            <i class="fas {{ getIcon(file) }}"></i>
+                            <i class="fas fa-folder"></i>
                         </span>
-                        <p class="name">{{ file }}</p>
-                    </div>
-                    <app-actions path="{{ file }}"></app-actions>
-                </div>
-            </div>
+                    </td>
+                    <td class="open" (click)="navigateFolder(folder.name)">{{folder.name}}</td>
+                    <td class="open" (click)="navigateFolder(folder.name)"> — </td>
+                    <td class="open" (click)="navigateFolder(folder.name)">{{ getDate(folder.createdAt) }}</td>
+                    <td class="no-open">
+                        <app-actions path="{{ folder.name }}"></app-actions>
+                    </td>
+                </tr>
+            </table>
+            
+            <table matSort (matSortChange)="sortFiles($event)" class="table" *ngIf="data.content.files.length > 0 || loading">
+                <tr>
+                  <th width="5%"></th>
+                  <th width="45%" mat-sort-header="name">Name</th>
+                  <th width="15%" mat-sort-header="size">Size</th>
+                  <th width="15%" mat-sort-header="date">Date</th>
+                  <th width="20%">Actions</th>
+                </tr>
+              
+                <tr *ngFor="let file of sortedFiles" class="containerFiles">
+                    <td>
+                        <span class="icon">
+                            <i class="fas {{ getIcon(file.name) }}"></i>
+                        </span>
+                    </td>
+                    <td>{{file.name}}</td>
+                    <td>{{ getSize(file.size) }}</td>
+                    <td>{{ getDate(file.createdAt) }}</td>
+                    <td>
+                        <app-actions path="{{ file.name }}" [isFile]="true"></app-actions>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 
@@ -52,5 +110,6 @@
         </div>
     </div>
 
+    <app-upload [path]="path" [maskLoad]="maskLoad" ($newActionUploaded)="newActionUploaded()"></app-upload>
     <app-loading [showEvent]="maskLoad"></app-loading>
 </div>

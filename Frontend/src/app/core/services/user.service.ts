@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { LsUser } from '@models/user.models';
 import { Observable, ObservableInput, catchError, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -11,6 +11,7 @@ import { environment } from 'src/enviroment/enviroment';
 export class UserService {
 
   private url = `${environment.url_api}/user`
+  userProfile = new EventEmitter<boolean>()
 
   constructor(
     private authService: AuthService,

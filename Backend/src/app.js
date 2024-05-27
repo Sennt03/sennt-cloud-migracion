@@ -23,7 +23,8 @@ class App{
     }
 
     middlewares(){
-        this.app.use(cors(optionsCors));
+        // this.app.use(cors(optionsCors));
+        this.app.use(cors());
         this.app.use(express.json())
         this.app.use(express.urlencoded({extended: true}))
         this.app.use(fileUpload())
@@ -34,12 +35,13 @@ class App{
     }
 
     errHandlers(){
-        this.app.use(errHandler.logErrors)
+        // this.app.use(errHandler.logErrors)
         this.app.use(errHandler.errorHandler)
     }
 
     start(){
         this.app.listen(config.port, () => {
+        // this.app.listen(config.port, '192.168.100.75', () => {
             console.log('Server on port', config.port)
         })
     }

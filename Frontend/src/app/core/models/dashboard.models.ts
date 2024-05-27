@@ -1,8 +1,14 @@
+interface LsData{
+    name: string,
+    createdAt: Date,
+    size: number
+}
+
 export interface LsOpenDir{
     path: string,
     content: {
-        files: string[],
-        directories: string[]
+        files: LsData[],
+        directories: LsData[]
     }
 }
 

@@ -1,20 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from './components/loading/loading.component';
-import { ActionsComponent } from './components/actions/actions.component';
+import { MaterialModule } from '@material/material.module';
+import { ModalActionsComponent } from './components/modal-actions/modal-actions.component';
 
 
 @NgModule({
   declarations: [
     LoadingComponent,
-    ActionsComponent
+    ModalActionsComponent,
+    ModalActionsComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule
   ],
   exports: [
     LoadingComponent,
-    ActionsComponent
+    MaterialModule,
+    ModalActionsComponent
   ]
 })
 export class SharedModule { }

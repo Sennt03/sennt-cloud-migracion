@@ -4,7 +4,7 @@
 // GENERAL
 
 body {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Nunito', sans-serif !important;
     line-height: 26px;
     color: $primary;
     font-weight: 400;
@@ -288,3 +288,6 @@ p {
         margin: 0 auto;
     }
 }
+
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
