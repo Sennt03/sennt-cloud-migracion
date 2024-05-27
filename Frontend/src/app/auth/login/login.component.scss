@@ -1,3 +1,9 @@
 // ::ng-deep body{
 
 // }
+
+.alert{
+    position: absolute;
+    z-index: 100;
+    background: #dfdfdf;
+}

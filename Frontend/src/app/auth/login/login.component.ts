@@ -15,6 +15,7 @@ export class LoginComponent {
 
   form: FormGroup
   maskLoad = new Subject<boolean>()
+  show = true
 
   constructor(
     private renderer: Renderer2,
