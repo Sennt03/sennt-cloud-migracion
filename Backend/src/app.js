@@ -5,6 +5,7 @@ const router = require('./network/routes')
 const errHandler = require('./middlewares/errorHandlers')
 const config = require('./config/config')
 const db = require('./db/connection')
+const path = require('path')
 
 const optionsCors = { origin: (origin, callback) => {
     if (config.whiteList.includes(origin) || !origin) callback(null, true);
@@ -32,6 +33,9 @@ class App{
 
     routes(){
         router(this.app)
+
+        this.app.use(express.static(path.join(__dirname, '/uploads/docs')))
+        this.app.use(express.static(path.join(__dirname, '../public')))
     }
 
     errHandlers(){
