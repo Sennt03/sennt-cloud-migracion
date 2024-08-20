@@ -81,7 +81,7 @@ async function createDir(userId, mipath, name){
     try{
         await fs.mkdir(pathComplete)
         // return {message: 'Carpeta creada correctamente'}
-        return {message: `"${name}": Successfully created folder`}
+        return {message: `Folder "${name}" created successfully`}
     }catch(e){
         if(e.code == 'ENOENT'){
             // throw myError('Ruta inexistente', 400)
@@ -172,7 +172,7 @@ async function deleteFile(userId, mipath){
 
     let nombre = getNameFromPath(mipath)
     // return { message: `"${nombre}": Eliminado correctamente` }
-    return { message: `"${nombre}": Successfully removed` }
+    return { message: `"${nombre}" removed successfully` }
 }
 
 async function copy(userId, mipath, newPath){

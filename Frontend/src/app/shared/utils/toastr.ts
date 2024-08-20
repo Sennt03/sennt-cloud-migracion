@@ -28,7 +28,8 @@ declare const toastr: {
     info: NotificationFunction,
     options: Options,
     setOption: (option: OptionsNames, value: string | number) => void,
-    setDefaultsOptions: () => void
+    setDefaultsOptions: () => void,
+    clear: () => void
 };
 
 const optionsDefault: Options = {
@@ -59,7 +60,13 @@ function setDefaultsOptions(){
     toastr.options = Object.assign({}, optionsDefault)
 }
 
-toastr.setOption = setOption
-toastr.setDefaultsOptions = setDefaultsOptions
+function clear() {
+    const toastContainers = document.querySelectorAll('.toast');
+    toastContainers.forEach(container => container.remove());
+}
+
+toastr.setOption = setOption;
+toastr.setDefaultsOptions = setDefaultsOptions;
+toastr.clear = clear;
 
 export default toastr

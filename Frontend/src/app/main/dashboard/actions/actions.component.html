@@ -14,11 +14,11 @@
         <mat-icon>file_copy</mat-icon>
         <span>Copy</span>
     </button>
-    <button mat-menu-item>
+    <button mat-menu-item (click)="deleteFile()">
         <mat-icon>delete</mat-icon>
         <span>Delete</span>
     </button>
-    <button mat-menu-item *ngIf="isFile">
+    <button mat-menu-item *ngIf="isFile" (click)="download()">
         <mat-icon>download</mat-icon>
         <span>Download</span>
     </button>

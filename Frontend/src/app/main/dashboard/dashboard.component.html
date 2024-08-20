@@ -29,7 +29,7 @@
                             </span>
                             <p class="name">{{ folder.name }}</p>
                         </div>
-                        <app-actions path="{{ folder.name }}"></app-actions>
+                        <app-actions [maskLoad]="maskLoad" name="{{ folder.name }}" path="{{ path }}"></app-actions>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                             </span>
                             <p class="name">{{ file.name }}</p>
                         </div>
-                        <app-actions path="{{ file.name }}" [isFile]="true"></app-actions>
+                        <app-actions [maskLoad]="maskLoad" name="{{ file.name }}" path="{{ path }}" [isFile]="true"></app-actions>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                     <td class="open" (click)="navigateFolder(folder.name)"> — </td>
                     <td class="open" (click)="navigateFolder(folder.name)">{{ getDate(folder.createdAt) }}</td>
                     <td class="no-open">
-                        <app-actions path="{{ folder.name }}"></app-actions>
+                        <app-actions [maskLoad]="maskLoad" name="{{ folder.name }}" path="{{ path }}"></app-actions>
                     </td>
                 </tr>
             </table>
@@ -94,7 +94,7 @@
                     <td>{{ getSize(file.size) }}</td>
                     <td>{{ getDate(file.createdAt) }}</td>
                     <td>
-                        <app-actions path="{{ file.name }}" [isFile]="true"></app-actions>
+                        <app-actions [maskLoad]="maskLoad" name="{{ file.name }}" path="{{ path }}" [isFile]="true"></app-actions>
                     </td>
                 </tr>
             </table>
@@ -110,6 +110,6 @@
         </div>
     </div>
 
-    <app-upload [path]="path" [maskLoad]="maskLoad" ($newActionUploaded)="newActionUploaded()"></app-upload>
+    <app-upload [path]="path" [maskLoad]="maskLoad"></app-upload>
     <app-loading [showEvent]="maskLoad"></app-loading>
 </div>

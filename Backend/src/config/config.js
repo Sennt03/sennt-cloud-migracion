@@ -14,10 +14,10 @@ const config = {
     // cloud
     cloudPath: path.join(__dirname, '../../Cloud/'),
     archivoOculto: 'archivoDeAccion.Q2YzzBiYjabJmODEiL1J.api.senntcloud.txt',
-    maxFileSizeInMB: 10,
+    maxFileSizeInMB: 1024,
     maxCloudSizeInMB: 1024,
     usersUnlimit: [
-        // {id: '6651fe5b1d140c0ca8201a59', email: 'admin@admin.com'}
+        {id: '6651fe5b1d140c0ca8201a59', email: 'admin@admin.com'}
     ],
 }
 

@@ -19,6 +19,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @NgModule({
   declarations: [],
@@ -35,7 +37,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatSlideToggleModule,
     MatDialogModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatSnackBarModule
   ],
   exports: [
     MatIconModule,
@@ -49,7 +52,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatSlideToggleModule,
     MatDialogModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialModule { }

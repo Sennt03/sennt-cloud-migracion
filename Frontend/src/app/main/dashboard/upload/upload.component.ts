@@ -11,6 +11,7 @@ import { Sort } from '@angular/material/sort';
 import { Subscription, of, switchMap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalFolderComponent } from './modal-folder/modal-folder.component';
+import { DashboardService } from '@services/dashboard.service';
 
 @Component({
   selector: 'app-upload',
@@ -20,7 +21,7 @@ import { ModalFolderComponent } from './modal-folder/modal-folder.component';
 export class UploadComponent implements OnInit, OnDestroy{
 
   @ViewChild('expansionPanel', { static: true }) expansionPanel: MatExpansionPanel;
-  @Output() $newActionUploaded = new EventEmitter<boolean>()
+  @Output() $newActionReload = new EventEmitter<boolean>()
   @Input() path: string;
   @Input() maskLoad: any;
   $newFolder: Subscription
@@ -36,7 +37,8 @@ export class UploadComponent implements OnInit, OnDestroy{
   constructor(
     private _bottomSheet: MatBottomSheet,
     private cloudService: CloudService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private dashBoardService: DashboardService
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +69,8 @@ export class UploadComponent implements OnInit, OnDestroy{
     this.cloudService.createFolder(name.trim(), this.path).subscribe({
       next: (res) => {
         toastr.success(res.message, 'Successful')
-        this.$newActionUploaded.emit(true)
+        // this.$newActionReload.emit(true)
+        this.dashBoardService.reloadDashboard(true)
       },
       error: (err) => {
         toastr.error(err.error.message, 'Error')
@@ -94,7 +97,8 @@ export class UploadComponent implements OnInit, OnDestroy{
           this.progressUpload.text = 'Finished'
           this.expansionPanel.open();
           this.progressUpload.loading = false
-          this.$newActionUploaded.emit(true)
+          // this.$newActionReload.emit(true)
+          this.dashBoardService.reloadDashboard(true)
         }
       },
       error: (err) => {

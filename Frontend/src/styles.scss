@@ -26,6 +26,13 @@ p {
   font-size: 16px;
 }
 
+.white-snack-bar .mdc-snackbar__surface{
+    background-color: #fff !important;  // Fondo blanco para todo el SnackBar
+    color: black !important;  // Color del texto
+    box-shadow: none;  // Eliminar sombras si es necesario
+}
+  
+
 #toast-container > div{
     padding: 8px 25px 8px 50px;
     width: 300px;

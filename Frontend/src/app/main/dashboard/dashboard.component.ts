@@ -52,6 +52,10 @@ export class DashboardComponent implements OnInit, OnDestroy{
         this.processURL();
       }
     });
+
+    this.dashBoardService.reloadDashboard$.subscribe(data => {
+      this.newActionReload()
+    });
   }
 
   ngOnDestroy(): void {
@@ -87,7 +91,7 @@ export class DashboardComponent implements OnInit, OnDestroy{
     this.router.navigate([`/r/${newPath}`])
   }
 
-  newActionUploaded(){
+  newActionReload(){
     this.openDir()
     this.userService.userProfile.emit(true)
   }
