@@ -115,11 +115,6 @@ async function uploadFile(userId, mipath, files){
             continue
         }
 
-        return {
-            file: file.size,
-            maxFileSizeInBytes,
-            val: file.size > maxFileSizeInBytes
-        }
         if(file.size > maxFileSizeInBytes && !analitycs.unlimit) {
             // responses.push({message: `"${file.name}": El tamaño máximo es ${maxFileSizeInMB}MB.`, status: 400})
             // responses.push({name: file.name, message: `El tamaño máximo es ${maxFileSizeInMB}MB.`, status: 400})
